@@ -12,7 +12,7 @@ Ensure the default PostgreSQL module is disabled to avoid conflicts.
 dnf -qy module disable postgresql
 ```
 
-## Step 3: Install PostgreSQL 16 Server
+## Step 3: Install PostgreSQL 17 Server
 This command installs the PostgreSQL 16 server package and automatically creates a `postgres` user at the OS level.
 ```sh
 dnf install -y postgresql17-server
@@ -43,23 +43,23 @@ mkdir -p /u01/pgsql/17
 chown -R postgres:postgres /u01/pgsql/17
 ```
 
-## Step 2: Edit the `PGDATA` variable in the PostgreSQL service file.
+## Step 3: Edit the `PGDATA` variable in the PostgreSQL service file.
 ```sh
 vi /lib/systemd/system/postgresql-17.service
 ```
 
-## Step 3: Reload the systemd daemon to apply changes.
+## Step 4: Reload the systemd daemon to apply changes.
 ```sh
 systemctl daemon-reload
 ```
 
-## Step 4: Initialize the Database
+## Step 5: Initialize the Database
 Run the following command to initialize the PostgreSQL database.
 ```sh
 /usr/pgsql-16/bin/postgresql-17-setup initdb
 ```
 
-## Step 5: Enable and Start PostgreSQL Service
+## Step 6: Enable and Start PostgreSQL Service
 Enable PostgreSQL to start on boot and then start the service.
 ```sh
 systemctl enable postgresql-17
