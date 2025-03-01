@@ -1,5 +1,7 @@
 # Installing PostgreSQL using DNF on RHEL-based Systems
 
+https://github.com/user-attachments/assets/6e21f454-5d05-4dd1-8fe6-9f56422ea9ce
+
 ## Step 1: List Available PostgreSQL Modules
 Check the available PostgreSQL versions.
 ```sh
