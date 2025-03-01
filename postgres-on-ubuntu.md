@@ -1,5 +1,7 @@
 # Installing and Managing PostgreSQL on Debian/Ubuntu
 
+https://github.com/user-attachments/assets/0b08d401-3d4c-4dcd-a54e-ea09d814acb7
+
 ## Step 1: Install PostgreSQL Common Package
 Install the PostgreSQL common package, which includes scripts to manage PostgreSQL repositories.
 ```sh
