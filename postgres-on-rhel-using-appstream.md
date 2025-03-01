@@ -23,8 +23,26 @@ Install the PostgreSQL server package.
 ```sh
 dnf install postgresql-server
 ```
+## Step 5:Initialize the database cluster
 
-## Step 5: Reset PostgreSQL Module
+```
+postgresql-setup --initdb
+```
+
+## Step 6: Start the postgresql service
+
+```
+systemctl start postgresql.service
+systemctl status postgresql.service
+```
+## Step 7: Login
+
+```
+su - postgres
+psql
+```
+
+## Step 8: Reset PostgreSQL Module
 Reset the PostgreSQL module configuration.
 ```sh
 dnf module reset postgresql
