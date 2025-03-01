@@ -31,7 +31,7 @@ systemctl enable postgresql-17
 systemctl start postgresql-17
 ```
 
-## Custom Data Directory Configuration
+# Custom Data Directory Configuration
 If you need to set up a custom data directory:
 1. Stop the existing postgres, if any
 ```
