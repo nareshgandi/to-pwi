@@ -17,31 +17,38 @@ Install the latest version of PostgreSQL, which also initializes the database an
 ```sh
 sudo apt -y install postgresql
 ```
+## Step 4: Login and Check
+```
+su - postgres
+psql
+```
 
 ### Installation Details:
 - Software is installed in `/usr/lib/postgresql/17/`
 - Data directory is created at `/var/lib/postgresql/17/main`
 - Configuration is derived from `/usr/share/postgresql-common/createcluster.conf`
 
-## Step 4: List Existing Clusters
+# Custom location installation
+
+## Step 1: List Existing Clusters
 Check available PostgreSQL clusters and their status.
 ```sh
 /usr/bin/pg_lsclusters
 ```
 
-## Step 5: Stop and Remove the Default Cluster
+## Step 2: Stop and Remove the Default Cluster
 If you want to remove the automatically created cluster:
 ```sh
 /usr/bin/pg_dropcluster --stop 17 main
 ```
 
-## Step 6: Create a New Cluster in a Custom Location
+## Step 3: Create a New Cluster in a Custom Location
 You can specify a custom directory for your PostgreSQL cluster.
 ```sh
 /usr/bin/pg_createcluster 17 mydata -d /u01/pgsql/17
 ```
 
-## Step 7: Start the New Cluster
+## Step 4: Start the New Cluster
 ```sh
 /usr/bin/pg_ctlcluster 17 mydata start
 ```
@@ -49,18 +56,22 @@ Or using systemd:
 ```sh
 systemctl start postgresql-17.service
 ```
-
-## Step 8: Start/Stop PostgreSQL Using `pg_ctl`
+## Step 5: Login and Check
+```
+su - postgres
+psql
+```
+## Start/Stop PostgreSQL Using `pg_ctl`
 If you prefer `pg_ctl` for cluster management:
 ```sh
-/usr/lib/postgresql/16/bin/pg_ctl start "-D" "/u01/pgsql/17" "-o -c config_file=/etc/postgresql/16/mydata/postgresql.conf"
+/usr/lib/postgresql/17/bin/pg_ctl start "-D" "/u01/pgsql/17" "-o -c config_file=/etc/postgresql/17/mydata/postgresql.conf"
 
-/usr/lib/postgresql/16/bin/pg_ctl stop "-D" "/u01/pgsql/17" "-o -c config_file=/etc/postgresql/16/mydata/postgresql.conf"
+/usr/lib/postgresql/17/bin/pg_ctl stop "-D" "/u01/pgsql/17" "-o -c config_file=/etc/postgresql/17/mydata/postgresql.conf"
 ```
 
 ## PostgreSQL File Locations
 - **PostgreSQL Tools**: `/usr/bin/` (e.g., `pg_lsclusters`, `pg_createcluster`, `pg_ctlcluster`)
-- **PostgreSQL Binaries**: `/usr/lib/postgresql/16/bin/` (e.g., `pg_ctl`, `pg_dump`)
+- **PostgreSQL Binaries**: `/usr/lib/postgresql/17/bin/` (e.g., `pg_ctl`, `pg_dump`)
 - **Data Files**: `/var/lib/postgresql/17/main`
 - **Extensions**: `/usr/share/postgresql/17/`
 - **Documentation**: `/usr/share/doc/postgresql-common`
