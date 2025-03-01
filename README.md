@@ -1,12 +1,12 @@
-README: PostgreSQL Installation Guide
+# README: PostgreSQL Installation Guide
 
-Prerequisites
+## Prerequisites
 
-1. Ubuntu or RHEL Virtual Machines
+# Ubuntu or RHEL Virtual Machines
 
-Ensure that you have Ubuntu and/or RHEL virtual machines installed.
+* Ensure that you have Ubuntu and/or RHEL virtual machines installed.
 
-These VMs should have connectivity to both the host machine and the internet.
+* These VMs should have connectivity to both the host machine and the internet.
 
 2. Verify Connectivity
 
