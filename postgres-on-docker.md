@@ -1,5 +1,7 @@
 # Installing PostgreSQL 17 using Docker on Ubuntu
 
+
+
 ## Step 1: Update System Packages
 ```sh
 sudo apt update
