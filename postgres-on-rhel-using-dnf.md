@@ -1,6 +1,6 @@
 # Installing PostgreSQL on RHEL-based Systems
 
-https://github.com/user-attachments/assets/68f07015-fca2-4767-8d00-473a35a98e2c
+https://github.com/user-attachments/assets/414303c6-6256-4884-97e6-7aa3c6484806
 
 ## Step 1: Add PostgreSQL Repository
 Install the PostgreSQL Global Development Group (PGDG) repository.
