@@ -4,12 +4,12 @@
 
 ### Step 1: Stop PostgreSQL Service
 ```sh
-sudo systemctl stop postgresql
+sudo systemctl stop postgresql-17
 ```
 
 ### Step 2: Remove PostgreSQL Packages
 ```sh
-sudo yum remove -y postgresql*
+sudo dnf remove -y postgresql*
 sudo dnf remove pgdg-redhat-repo -y
 ```
 
@@ -23,18 +23,11 @@ sudo rm -rf /var/lib/pgsql
 sudo userdel -r postgres
 ```
 
-### Step 5: Clean Up Unused Dependencies
-```sh
-sudo yum autoremove -y
-```
-
----
-
 ## Uninstall PostgreSQL on Ubuntu
 
 ### Step 1: Stop PostgreSQL Service
 ```sh
-sudo systemctl stop postgresql
+sudo systemctl stop postgresql-17.service
 ```
 
 ### Step 2: Remove PostgreSQL Packages
