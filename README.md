@@ -37,9 +37,9 @@ ping google.com
 
 Refer to the individual markdown files provided to install PostgreSQL on various operating systems:
 
-* postgres-on-ubuntu.md – Guide for installing PostgreSQL on Ubuntu.
-* postgres-on-rhel-using-dnf.md – Guide for installing PostgreSQL on RHEL.
-* postgres-on-docker.md - Guide for installing PostgreSQL on Docker
+* `postgres-on-ubuntu.md` – Guide for installing PostgreSQL on Ubuntu.
+* `postgres-on-rhel-using-dnf.md` – Guide for installing PostgreSQL on RHEL.
+* `postgres-on-docker.md` - Guide for installing PostgreSQL on Docker
 
 ### Important Notes
 
