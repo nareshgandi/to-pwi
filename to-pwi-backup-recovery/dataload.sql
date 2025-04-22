@@ -1,6 +1,9 @@
-create database retaildb;
+create user retailuser with password 'postgres';
+create user retailread with password 'retailread';
 
-\c retaildb;
+create database retaildb with owner retailuser;
+
+\c retaildb retailuser;
 
 create schema retail;
 
@@ -145,3 +148,8 @@ CALL retail.record_sale(2, 3, 2, 5, '2025-02-05');
 CALL retail.restock_product(1, 1, 10);
 
 REFRESH MATERIALIZED VIEW retail.mv_monthly_sales_summary;
+
+grant connect on database retaildb to retailread;
+grant usage on schema retail to  retailread;
+grant select on all tables in schema retail to retailread;
+
