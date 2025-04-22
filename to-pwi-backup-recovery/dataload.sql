@@ -7,6 +7,7 @@ create database retaildb with owner retailuser;
 
 create schema retail;
 
+
 CREATE TABLE retail.stores (
     store_id SERIAL PRIMARY KEY,
     store_name TEXT NOT NULL,
@@ -15,12 +16,23 @@ CREATE TABLE retail.stores (
     opened_on DATE
 );
 
+CREATE TABLE retail.categories (
+    category_id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL UNIQUE,
+    description TEXT
+);
+
 CREATE TABLE retail.products (
     product_id SERIAL PRIMARY KEY,
     product_name TEXT NOT NULL,
     category TEXT,
-    price NUMERIC(10,2) NOT NULL CHECK (price > 0)
+    price NUMERIC(10,2) NOT NULL CHECK (price > 0),
+	category_id INT
 );
+
+ALTER TABLE retail.products
+ADD CONSTRAINT fk_product_category
+FOREIGN KEY (category_id) REFERENCES retail.categories(category_id);
 
 ALTER TABLE retail.products
 ADD CONSTRAINT chk_price_positive CHECK (price > 0);
@@ -121,6 +133,14 @@ BEGIN
     WHERE store_id = p_store_id AND product_id = p_product_id;
 END;
 $$;
+
+
+-- Categories
+INSERT INTO retail.categories (name, description) VALUES
+('Personal Care', 'Shampoos, soaps, hygiene products'),
+('Groceries', 'Food items and essentials'),
+('Electronics', 'Mobile phones, gadgets, accessories'),
+('Beverages', 'Soft drinks, juices, and bottled water');
 
 -- Stores
 INSERT INTO retail.stores(store_name, city, state, opened_on)
