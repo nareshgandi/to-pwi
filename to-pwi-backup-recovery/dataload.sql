@@ -169,6 +169,8 @@ CALL retail.restock_product(1, 1, 10);
 
 REFRESH MATERIALIZED VIEW retail.mv_monthly_sales_summary;
 
+create extension pg_buffercache;
+
 grant connect on database retaildb to retailread;
 grant usage on schema retail to  retailread;
 grant select on all tables in schema retail to retailread;
