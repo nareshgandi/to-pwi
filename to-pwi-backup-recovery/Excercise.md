@@ -117,3 +117,25 @@ GRANT SELECT ON TABLE retail.stores TO retailread;
 | Restore in restoreretaildb  | pg_restore -U retailuser -d restoreretail customdump.bkp            |
 |-----------------------------|---------------------------------------------------------------------|
 ```
+
+### Restore only certain object types
+
+#### First take the dump:
+
+pg_dump -U username --format=c --schema-only -f dump_test your_database
+
+#### Then create a list of the functions:
+
+pg_restore --list dump_test | grep FUNCTION > function_list
+
+Example.,
+```
+[postgres@lab02 backups]$ pg_restore --list customdump.bkp | grep PROCEDURE
+235; 1255 16985 PROCEDURE retail record_sale(integer, integer, integer, integer, date) retailuser
+234; 1255 16984 PROCEDURE retail restock_product(integer, integer, integer) retailuser
+[postgres@lab02 backups]$ pg_restore --list customdump.bkp | grep PROCEDURE > procedure_list
+```
+
+#### And finally restore them (-L or --use-list specifies the list file created above):
+
+pg_restore -U username -d your_other_database -L function_list dump_test
