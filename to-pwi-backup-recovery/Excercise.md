@@ -1,7 +1,7 @@
 #### Dump in plain text format
 
 ```
-pg_dump -U postgres -d retaildb -Fp -f plaintextdump.sql
+pg_dump -U retailuser -d retaildb -Fp -f plaintext.sql
 ```
 
 Sample output
@@ -92,7 +92,7 @@ GRANT SELECT ON TABLE retail.stores TO retailread;
 ### Other formats include
 
 ```
- pg_dump -U postgres -d retaildb -Fc -f customdump.bkp
- pg_dump -U postgres -d retaildb -Ft -f tardump.tar
- pg_dump -U postgres -d retaildb -Fd -f dirdump
+ pg_dump -U retailuser -d retaildb -Fc -f customdump.bkp
+ pg_dump -U retailuser -d retaildb -Ft -f tardump.tar
+ pg_dump -U retailuser -d retaildb -Fd -f dirdump
 ````
