@@ -2,6 +2,7 @@ create user retailuser with password 'postgres';
 create user retailread with password 'retailread';
 create extension pg_buffercache;
 
+create database restoreretail with owner retailuser;;
 create database retaildb with owner retailuser;
 
 \c retaildb retailuser;
@@ -174,7 +175,7 @@ grant connect on database retaildb to retailread;
 grant usage on schema retail to  retailread;
 grant select on all tables in schema retail to retailread;
 
-create database restoreretail;
+
 
 
 
