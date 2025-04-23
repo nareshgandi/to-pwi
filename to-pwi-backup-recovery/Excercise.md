@@ -69,6 +69,18 @@ CREATE VIEW retail.v_customer_purchases AS
 ...
 ...
 
+
+--
+-- Data for Name: categories; Type: TABLE DATA; Schema: retail; Owner: retailuser
+--
+
+COPY retail.categories (category_id, name, description) FROM stdin;
+1       Personal Care   Shampoos, soaps, hygiene products
+2       Groceries       Food items and essentials
+3       Electronics     Mobile phones, gadgets, accessories
+4       Beverages       Soft drinks, juices, and bottled water
+\.
+
 --
 -- Name: TABLE stores; Type: ACL; Schema: retail; Owner: retailuser
 --
