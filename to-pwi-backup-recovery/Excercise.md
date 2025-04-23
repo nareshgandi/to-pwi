@@ -96,3 +96,21 @@ GRANT SELECT ON TABLE retail.stores TO retailread;
  pg_dump -U retailuser -d retaildb -Ft -f tardump.tar
  pg_dump -U retailuser -d retaildb -Fd -f dirdump
 ````
+
+### More commands
+
+```
+| Type (Backups)              | Command                                                             |
+|-----------------------------|---------------------------------------------------------------------|
+| Custom format dump          | pg_dump -U retailuser -d retaildb -Fc -f customdump.bkp             |
+| Tar format dump             | pg_dump -U retailuser -d retaildb -Ft -f tardump.tar                |
+| Directory format dump       | pg_dump -U retailuser -d retaildb -Fd -f dirdump                    |
+| products table only         | pg_dump -U retailuser -d retaildb  -t products -Fc -f products.bkp  |
+| retail schema only          | pg_dump -U retailuser -d retaildb -n retail -Fc -f retailschema.bkp |
+| data only                   | pg_dump -U retailuser -d retaildb -a  -Fc -f dataonly.bkp           |
+| definitions only            | pg_dump -U retailuser -d retaildb -s  -Fc -f meta.bkp               |
+|                             |                                                                     |
+| Type (Restore)              | Command                                                             |
+| custom to sql               | pg_restore products.bkp -f productstosql.sql                        |
+| Restore in restoreretaildb  | pg_restore -U retailuser -d restoreretail customdump.bkp            |
+```
