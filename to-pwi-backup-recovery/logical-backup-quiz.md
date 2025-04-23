@@ -70,4 +70,40 @@ a) Use pg_restore with a specific timestamp.
 b) Restore from a full backup and then apply WAL archives. ✅
 c) Use pg_basebackup and specify the --recover option.
 d) Use pg_dump with --restore-time.
+
+11. What is the primary utility used for taking physical backups in PostgreSQL?
+
+a) pg_restore
+b) pg_basebackup ✅
+c) pg_dump
+d) psql
+
+12. Which of the following is required for performing a physical backup using pg_basebackup?
+
+a) Superuser access or replication role ✅
+b) An active connection to pg_stat_activity
+c) An existing logical replication slot
+d) Archive_mode set to off
+
+13. What does the archive_mode parameter control in PostgreSQL?
+
+a) Whether logs are rotated automatically
+b) Whether the database logs queries
+c) Whether WAL files are archived for backup and recovery ✅
+d) Whether tablespaces are included in the backup
+
+14. What is a key limitation of pg_basebackup?
+
+a) It cannot backup WAL files
+b) It cannot perform hot backups
+c) It requires the database to be offline
+d) It cannot selectively backup specific databases or tables ✅
+
+15. Why are WAL (Write-Ahead Logging) files important in physical backups?
+
+a) They contain query plans
+b) They enable point-in-time recovery and data consistency ✅
+c) They store configuration settings
+d) They are used only for logical replication
+
 ```
