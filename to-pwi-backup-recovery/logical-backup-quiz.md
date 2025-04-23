@@ -1,8 +1,8 @@
-Quiz: Logical Backup and Recovery in PostgreSQL
+Quiz: Backup and Recovery in PostgreSQL
 ```
 1. What is the difference between physical and logical backups in PostgreSQL?
    
-  a) Physical backups only back up the data files, while logical backups back up the database schema
+  a) Physical backups back up the data files, while logical backups back up the database schema
 and data in SQL format. ✅
   b) Logical backups only back up the database schema, while physical backups back up the entire database including data and WAL logs.
   c) There is no difference; both are the same.
@@ -59,7 +59,7 @@ d) pg_basebackup -g
 
 9. Which PostgreSQL command would you use to restore a full database dump?
 
-a) pg_restore
+a) pg_dump
 b) pg_basebackup
 c) pg_restore -d ✅
 d) psql -f
