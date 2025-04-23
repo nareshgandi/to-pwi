@@ -6,7 +6,7 @@ Quiz: Logical Backup and Recovery in PostgreSQL
   b) Logical backups only back up the database schema, while physical backups back up the entire database including data and WAL logs.
   c) There is no difference; both are the same.
   d) Physical backups are slower than logical backups.
-```
+
 3. Which PostgreSQL utility is used for logical backups?
 a) pg_restore
 
@@ -87,4 +87,4 @@ b) Restore from a full backup and then apply WAL archives. ✅
 c) Use pg_basebackup and specify the --recover option.
 
 d) Use pg_dump with --restore-time.
-
+```
