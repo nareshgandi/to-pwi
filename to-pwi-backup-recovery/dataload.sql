@@ -174,6 +174,9 @@ grant connect on database retaildb to retailread;
 grant usage on schema retail to  retailread;
 grant select on all tables in schema retail to retailread;
 
+create database restoreretail;
+
+
 create schema largeretail;
 
 CREATE TABLE largeretail.toast_example (
