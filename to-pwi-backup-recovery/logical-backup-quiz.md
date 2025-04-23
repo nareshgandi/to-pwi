@@ -1,4 +1,4 @@
-Quiz: Backup and Recovery in PostgreSQL
+### Quiz: Backup and Recovery in PostgreSQL
 ```
 1. What is the difference between physical and logical backups in PostgreSQL?
    
