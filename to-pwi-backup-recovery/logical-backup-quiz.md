@@ -1,14 +1,12 @@
 Quiz: Logical Backup and Recovery in PostgreSQL
 1. What is the difference between physical and logical backups in PostgreSQL?
-a) Physical backups only back up the data files, while logical backups back up the database schema and data in SQL format. ✅
+   
+  a) Physical backups only back up the data files, while logical backups back up the database schema and data in SQL     format. ✅
+  b) Logical backups only back up the database schema, while physical backups back up the entire database including data and WAL logs.
+  c) There is no difference; both are the same.
+  d) Physical backups are slower than logical backups.
 
-b) Logical backups only back up the database schema, while physical backups back up the entire database including data and WAL logs.
-
-c) There is no difference; both are the same.
-
-d) Physical backups are slower than logical backups.
-
-2. Which PostgreSQL utility is used for logical backups?
+3. Which PostgreSQL utility is used for logical backups?
 a) pg_restore
 
 b) pg_basebackup
