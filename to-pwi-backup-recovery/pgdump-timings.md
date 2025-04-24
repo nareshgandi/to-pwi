@@ -1,3 +1,7 @@
+### Database size : 37 GB
+
+#### Logical backup duration
+
 | Format    | Options | Duration (s) | Dump Size |
 |-----------|---------|--------------|-----------|
 | plain     | -       | 161          | 23G       |
@@ -14,7 +18,8 @@
 
 
 
-backup
+#### Physical backup duration
+
 
 | Format             | Options (982MB) | Duration (s)    | Dump Size |
 |--------------------|-----------------|-----------------|-----------|
