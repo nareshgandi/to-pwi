@@ -58,6 +58,7 @@ sudo -u postgres pgbackrest --stanza=lab01 backup
 7. To restore
 
 sudo -u postgres pgbackrest --stanza=demo --log-level-console=info restore
+```
 
 ### additional scenarios
 
