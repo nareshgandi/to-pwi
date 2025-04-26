@@ -94,8 +94,8 @@ sudo -u postgres pgbackrest --stanza=demo --delta --db-include=a --type=immediat
 
 ### pitr
 
-
 ```
+
 -- do some activity
 #Take the backup on the backup server:
 
@@ -106,4 +106,85 @@ stop the database
 sudo -u postgres pgbackrest --stanza=demo --delta
 --target-timeline=current
 --type=time "--target=2025-04-23 22:26:16" --target-action=promote restore
+
 ```
+
+# Cloud
+
+node 1
+```
+[root@lab02 pgbackrest]# cat /etc/pgbackrest/pgbackrest.conf
+[cloud]
+pg1-path=/u01/pgsql/17
+
+[global]
+repo1-retention-full=2
+repo1-type=s3
+repo1-path=/demo
+repo1-s3-region=us-east-1
+repo1-s3-endpoint=s3.us-east-1.amazonaws.com
+repo1-s3-bucket=dmsmybucket
+repo1-s3-key=
+repo1-s3-key-secret=
+
+# Force a checkpoint to start backup immediately.
+start-fast=y
+# Use delta restore.
+delta=y
+
+# Enable ZSTD compression.
+compress-type=zst
+compress-level=6
+
+log-level-console=info
+log-level-file=debug
+[root@lab02 pgbackrest]#
+```
+
+Then
+
+```
+check
+take backup
+```
+## set up standby
+
+node 2
+------
+
+```
+[root@lab01 ~]# cat /etc/pgbackrest/pgbackrest.conf
+[cloud]
+pg1-path=/u01/pgsql/17
+recovery-option=primary_conninfo=host=lab02 user=postgres
+
+[global]
+repo1-retention-full=2
+repo1-type=s3
+repo1-path=/demo
+repo1-s3-region=us-east-1
+repo1-s3-endpoint=s3.us-east-1.amazonaws.com
+repo1-s3-bucket=dmsmybucket
+repo1-s3-key=
+repo1-s3-key-secret=
+
+# Force a checkpoint to start backup immediately.
+start-fast=y
+# Use delta restore.
+delta=y
+
+# Enable ZSTD compression.
+compress-type=zst
+compress-level=6
+
+log-level-console=info
+log-level-file=debug
+
+[root@lab01 ~]#
+```
+
+### then run restore command
+```
+sudo -iu postgres pgbackrest --stanza=cloud --type=standby restore
+```
+
