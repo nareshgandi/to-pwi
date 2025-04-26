@@ -59,4 +59,51 @@ sudo -u postgres pgbackrest --stanza=lab01 backup
 
 sudo -u postgres pgbackrest --stanza=demo --log-level-console=info restore
 
+### additional scenarios
 
+```
+a=# select pg_relation_filepath('emp');
+ pg_relation_filepath
+----------------------
+ base/17440/17441
+(1 row)
+
+a=# \q
+[postgres@lab02 17]$ cd base/17440
+[postgres@lab02 17440]$ rm -rf 17441
+[postgres@lab02 17440]$ psql
+psql (17.4)
+Type "help" for help.
+
+postgres=# \c a
+You are now connected to database "a" as user "postgres".
+a=# select * from emp;
+ERROR:  could not open file "base/17440
+
+sudo -u postgres pgbackrest --stanza=demo restore --delta
+```
+### restore the database
+
+```
+create database a;
+take backup
+drop database a;
+
+sudo -u postgres pgbackrest --stanza=demo --delta --db-include=a --type=immediate --target-action=promote restore
+```
+
+### pitr
+
+
+```
+-- do some activity
+#Take the backup on the backup server:
+
+sudo -u postgres pgbackrest --stanza=lab01 backup --type=incr
+
+stop the database
+
+sudo -u postgres pgbackrest --stanza=demo --delta
+--target-timeline=current
+--type=time "--target=2025-04-23 22:26:16" --target-action=promote restore
+```
