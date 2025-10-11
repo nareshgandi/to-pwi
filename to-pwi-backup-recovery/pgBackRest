@@ -1,0 +1,76 @@
+####  Basic pgbackrest, lab01 is primary, lab02 in backup server
+
+ssh-keygen -t rsa
+ssh postgres@192.168.110.145 mkdir -p .ssh
+cat .ssh/id_rsa.pub | ssh postgres@192.168.110.145 'cat >> .ssh/authorized_keys'
+ssh postgres@192.168.110.145 "chmod 700 .ssh; chmod 640 .ssh/authorized_keys"
+ssh postgres@192.168.110.145
+
+ssh-keygen -t rsa
+ssh postgres@192.168.110.148 mkdir -p .ssh
+cat .ssh/id_rsa.pub | ssh postgres@192.168.110.148 'cat >> .ssh/authorized_keys'
+ssh postgres@192.168.110.148 "chmod 700 .ssh; chmod 640 .ssh/authorized_keys"
+ssh postgres@192.168.110.148
+
+
+1. yum install pgbackrest [both machines]
+
+2. set up passwordless connectivity for postgres user between both machines [both machines]
+
+3. postgresql.conf [prod server]
+
+archive_command = 'pgbackrest --stanza=lab01 archive-push %p'
+archive_mode = on
+listen_addresses = '*'
+log_line_prefix = ''
+
+4. Run in both machines
+
+sudo mkdir -p -m 770 /var/log/pgbackrest
+sudo chown postgres:postgres /var/log/pgbackrest
+
+sudo mkdir -p /etc/pgbackrest
+sudo mkdir -p /etc/pgbackrest/conf.d
+
+sudo touch /etc/pgbackrest/pgbackrest.conf
+sudo chmod 640 /etc/pgbackrest/pgbackrest.conf
+sudo chown postgres:postgres /etc/pgbackrest/pgbackrest.conf
+
+sudo mkdir -p /u01/backups/pgbackrest
+sudo chown -R postgres:postgres /u01/backups/pgbackrest
+
+5. Run in production server (/etc/pgbackrest/pgbackrest.conf)
+
+[global]
+repo1-host=lab02
+repo1-host-user=postgres
+process-max=2
+log-level-console=info
+log-level-file=debug
+
+[lab01]
+pg1-path=/u01/pgsql/17
+
+6. Run in the backup server (/etc/pgbackrest/pgbackrest.conf)
+
+[global]
+repo1-path=/u01/backups/pgbackrest
+repo1-retention-full=2
+process-max=2
+log-level-console=info
+log-level-file=debug
+start-fast=y
+stop-auto=y
+
+[lab01]
+pg1-path=/u01/pgsql/17
+pg1-host=lab01
+pg1-port = 5432
+
+sudo -u postgres pgbackrest --stanza=lab01 stanza-create
+sudo -u postgres pgbackrest --stanza=lab01 --log-level-console=info check
+sudo -u postgres pgbackrest --stanza=lab01 --log-level-console=info backup
+
+7. Restore in production server
+
+sudo -u postgres pgbackrest --stanza=lab01 restore
