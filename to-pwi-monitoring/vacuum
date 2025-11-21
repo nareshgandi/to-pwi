@@ -1,0 +1,102 @@
+-- create_big_table.sql
+-- Drop if exists (for repeatable demos)
+DROP TABLE IF EXISTS big_table CASCADE;
+
+CREATE UNLOGGED TABLE big_table (
+  id bigserial PRIMARY KEY,
+  col1 text,         -- big text blob
+  col2 text,         -- another big text blob
+  col3 text,         -- smaller text for tsvector
+  col4 integer,
+  created_at timestamptz
+);
+
+ALTER TABLE big_table SET (autovacuum_enabled = off);
+
+DO
+$$
+DECLARE
+  batch integer := 100000;       -- rows per batch
+  TARGET_ROWS bigint := 2480645; -- target from calculation for ~5GB
+  batches integer;
+  i integer;
+BEGIN
+  batches := ceil(TARGET_ROWS::numeric / batch::numeric);
+  RAISE NOTICE 'Target rows=% batches=% batch=%', TARGET_ROWS, batches, batch;
+
+  FOR i IN 0..(batches-1) LOOP
+    INSERT INTO big_table (col1, col2, col3, col4, created_at)
+    SELECT
+      repeat(md5(random()::text), 20),   -- ~640 bytes
+      repeat(translate(md5(random()::text),'abcdef','123456'), 20), -- ~640 bytes
+      repeat('word ',50),                -- ~250 bytes
+      (random()*100000)::int,
+      now() - (random()*10000 || ' seconds')::interval
+    FROM generate_series(1, LEAST(batch, TARGET_ROWS - i*batch));
+
+    RAISE NOTICE 'Inserted batch % (rows inserted so far: %)',
+      i+1, LEAST((i+1)*batch, TARGET_ROWS);
+  END LOOP;
+END
+$$ LANGUAGE plpgsql;
+
+-- Index 1: btree on col4
+CREATE INDEX idx_big_table_col4 ON big_table(col4);
+
+-- Index 2: btree on left(col1, 100) - helps prefix searches
+CREATE INDEX idx_big_table_col1_prefix ON big_table (left(col1,100));
+
+-- Index 3: functional index lower(col2)
+CREATE INDEX idx_big_table_lower_col2 ON big_table (lower(col2));
+
+-- Index 4: GIN tsvector index on col2||col3 (text search)
+CREATE INDEX idx_big_table_tsv ON big_table USING gin (to_tsvector('english', coalesce(col2,'') || ' ' || coalesce(col3,'')));
+
+
+
+DO
+$$
+DECLARE
+  batch integer := 50000;
+  total bigint := (SELECT count(*) FROM big_table);
+  loops integer := ceil( (total * 0.10) / batch );
+  i integer;
+BEGIN
+  FOR i IN 1..loops LOOP
+    UPDATE big_table
+    SET col4 = col4 + 1
+    WHERE id IN (
+      SELECT id FROM big_table WHERE random() < 0.30 LIMIT batch
+    );
+    RAISE NOTICE 'Updated batch % of %', i, loops;
+  END LOOP;
+END
+$$;
+
+CREATE EXTENSION IF NOT EXISTS pgstattuple;
+
+SELECT
+    table_len,
+    tuple_len,
+    dead_tuple_len,
+    free_space,
+    ROUND(100 * dead_tuple_len / table_len, 2) AS dead_tuple_pct,
+    ROUND(100 * free_space / table_len, 2) AS free_space_pct,
+    ROUND(100 * (dead_tuple_len + free_space) / table_len, 2) AS bloat_pct
+FROM pgstattuple('big_table');
+
+VACUUM QUERY
+--------------
+
+SELECT
+    pid,
+    relid::regclass AS table_name,
+    phase,
+    heap_blks_total,
+    heap_blks_scanned,
+    ROUND(100.0 * heap_blks_scanned / NULLIF(heap_blks_total, 0), 2) AS pct_scanned,
+    index_vacuum_count,
+    heap_blks_vacuumed,
+    ROUND(100.0 * heap_blks_vacuumed / NULLIF(heap_blks_total, 0), 2) AS pct_vacuumed
+FROM pg_stat_progress_vacuum
+WHERE relid = 'big_table'::regclass;
