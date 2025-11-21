@@ -126,3 +126,5 @@ systemctl restart postgres_exporter
 Verify
 
 curl -s localhost:9187/metrics | grep pg_health
+
+Update dashboard
