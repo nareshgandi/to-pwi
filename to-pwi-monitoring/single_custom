@@ -1,0 +1,33 @@
+✅ Step 1 — Move the file to a readable location
+
+mkdir -p /etc/postgres_exporter
+cp /root/customqueries/my_custom_queries.yml /etc/postgres_exporter/
+chmod 644 /etc/postgres_exporter/my_custom_queries.yml
+
+vi /etc/postgres_exporter/my_custom_queries.yml
+
+pg_custom_user_connections:
+  query: "SELECT usename, count(*) AS connections FROM pg_stat_activity GROUP BY usename"
+  metrics:
+    - usename:
+        usage: "LABEL"
+        description: "User name"
+    - connections:
+        usage: "GAUGE"
+        description: "Active connections per user"
+
+✅ Step 2 — Update service file
+vi /etc/systemd/system/postgres_exporter.service
+
+ExecStart=/usr/local/bin/postgres_exporter \
+  --web.listen-address=":9187" \
+  --extend.query-path="/etc/postgres_exporter/my_custom_queries.yml"
+
+✅ Step 3 — Reload + restart
+
+systemctl daemon-reload
+systemctl restart postgres_exporter
+
+✅ Step 4 — Verify
+
+curl -s localhost:9187/metrics | grep -i custom
